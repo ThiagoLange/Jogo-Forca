@@ -1,0 +1,79 @@
+/* Estilos Gerais */
+body {
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;    /* Centraliza verticalmente */
+    min-height: 100vh;      /* Altura mínima da viewport */
+    background-color: #f0f0f0; /* Cor de fundo suave */
+    margin: 0;              /* Remove margens padrão do body */
+    color: #333;
+}
+
+#game-container {
+    background-color: #ffffff; /* Fundo branco para o container */
+    padding: 30px;
+    border-radius: 10px;      /* Bordas arredondadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    text-align: center;       /* Centraliza o texto dentro do container */
+    max-width: 500px;        /* Largura máxima */
+    width: 90%;              /* Largura responsiva */
+}
+
+h1 {
+    color: #4a4a4a;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #555;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+/* Estilo da Palavra Oculta */
+#word-display {
+    font-size: 2em;           /* Tamanho grande para a palavra */
+    letter-spacing: 10px;     /* Espaçamento entre letras/underscores */
+    margin-bottom: 30px;
+    border-bottom: 2px solid #eee; /* Linha sutil abaixo */
+    padding-bottom: 10px;
+    min-height: 40px; /* Garante altura mesmo vazio */
+}
+
+/* Estilo das Instruções */
+#instructions {
+    font-size: 1em;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Estilo da Área de Letras Erradas */
+#incorrect-letters {
+    margin-top: 20px;
+    min-height: 50px; /* Garante espaço mesmo vazio */
+}
+
+#wrong-letters-list {
+    color: #dc3545; /* Vermelho para letras erradas */
+    font-weight: bold;
+    font-size: 1.2em;
+    letter-spacing: 2px; /* Espaçamento entre letras erradas */
+    word-wrap: break-word; /* Quebra a linha se muitas letras */
+}
+
+/* Estilo para cada letra/underscore na palavra (opcional, mas útil) */
+.letter {
+    display: inline-block; /* Permite espaçamento e mantém na linha */
+    margin: 0 2px;        /* Pequeno espaço horizontal */
+    font-weight: bold;
+}
+
+/* (Opcional) Estilos para mensagens futuras */
+#message {
+    margin-top: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.win { color: #28a745; } /* Verde para vitória */
+.lose { color: #dc3545; } /* Vermelho para derrota */

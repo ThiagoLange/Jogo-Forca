@@ -77,3 +77,25 @@ h2 {
 }
 .win { color: #28a745; } /* Verde para vitória */
 .lose { color: #dc3545; } /* Vermelho para derrota */
+
+/* Estilo para o botão de reiniciar */
+#restart-button {
+    margin-top: 25px; /* Espaço acima do botão */
+    padding: 10px 20px; /* Preenchimento interno */
+    font-size: 1em;     /* Tamanho da fonte */
+    cursor: pointer;    /* Cursor de mãozinha */
+    background-color: #007bff; /* Cor de fundo azul */
+    color: white;       /* Cor do texto branca */
+    border: none;       /* Sem borda */
+    border-radius: 5px; /* Bordas arredondadas */
+    transition: background-color 0.3s ease; /* Transição suave */
+}
+
+#restart-button:hover {
+    background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
+}
+
+/* Estilo para o botão quando o jogo termina (opcional) */
+#restart-button.show {
+    display: inline-block; /* Ou block, dependendo do layout desejado */
+}

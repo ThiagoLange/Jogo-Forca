@@ -99,3 +99,39 @@ h2 {
 #restart-button.show {
     display: inline-block; /* Ou block, dependendo do layout desejado */
 }
+
+
+/* Container do Desenho */
+.hangman-drawing-container {
+    margin-bottom: 20px; /* Espaço abaixo do desenho */
+    display: flex;       /* Para centralizar o SVG se necessário */
+    justify-content: center;
+}
+
+/* Estilo base para as linhas e círculo do SVG */
+#hangman-svg line,
+#hangman-svg circle {
+    stroke: #333;          /* Cor das linhas (preto/cinza escuro) */
+    stroke-width: 4;       /* Espessura das linhas */
+    stroke-linecap: round; /* Pontas das linhas arredondadas */
+}
+
+/* Estilo específico para a cabeça (sem preenchimento) */
+#hangman-svg .head {
+    fill: none; /* Cabeça sem preenchimento, só contorno */
+}
+
+/* --- IMPORTANTE: Ocultar as partes do corpo inicialmente --- */
+.hangman-part {
+    /* visibility: hidden; */ /* Opção 1: Oculta, mas mantém espaço */
+    /* display: none; */      /* Opção 2: Remove completamente */
+    opacity: 0;             /* Opção 3: Torna transparente (bom para transições) */
+    transition: opacity 0.3s ease-in-out; /* Efeito suave ao aparecer */
+}
+
+/* --- Classe para tornar as partes visíveis --- */
+.hangman-part.visible {
+    /* visibility: visible; */
+    /* display: initial; */ /* ou 'block'/'inline' dependendo do elemento */
+    opacity: 1;
+}

@@ -135,3 +135,108 @@ h2 {
     /* display: initial; */ /* ou 'block'/'inline' dependendo do elemento */
     opacity: 1;
 }
+
+body {
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+    color: #333;
+}
+
+/* --- ESTILOS DA TELA DE LOGIN --- */
+#login-screen {
+    width: 100%;
+    display: flex; /* Usar flex para centralizar o container */
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    background-color: #ffffff;
+    padding: 40px; /* Mais padding no login */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+.login-container h2 {
+    color: #4a4a4a;
+    margin-bottom: 25px;
+}
+
+.login-container label {
+    display: block; /* Coloca o label acima do input */
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+    text-align: left; /* Alinha o texto do label à esquerda */
+}
+
+.login-container input[type="text"] {
+    width: calc(100% - 22px); /* Ajusta largura considerando padding e borda */
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.login-container button {
+    padding: 12px 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    background-color: #28a745; /* Verde para iniciar */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Botão ocupa toda a largura */
+}
+
+.login-container button:hover {
+    background-color: #218838; /* Verde mais escuro */
+}
+
+/* Estilo para mensagens (erro no login, vitória/derrota no jogo) */
+.message {
+    margin-top: 15px;
+    font-size: 0.9em;
+    font-weight: bold;
+    min-height: 1.2em; /* Garante espaço mesmo vazia */
+}
+.message.error {
+    color: #dc3545; /* Vermelho para erros */
+}
+.message.win {
+     color: #28a745; /* Verde para vitória */
+}
+.message.lose {
+     color: #dc3545; /* Vermelho para derrota */
+}
+
+
+/* --- ESTILOS DA TELA DO JOGO --- */
+
+/* Container do jogo (manter estilos anteriores ou ajustar) */
+#game-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 550px; /* Pode ajustar a largura */
+    width: 90%;
+}
+
+#player-greeting {
+    font-size: 1.1em;
+    color: #007bff; /* Azul para saudação */
+    margin-bottom: 15px;
+    font-weight: bold;
+}

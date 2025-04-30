@@ -7,31 +7,41 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game-container">
-        <h1>Jogo da Forca</h1>
 
-        <div class="hangman-drawing-container">
-             <svg height="250" width="200" id="hangman-svg">
-                <line x1="10" y1="230" x2="130" y2="230" class="gallows" /> <line x1="70" y1="230" x2="70" y2="20" class="gallows" />  <line x1="70" y1="20" x2="170" y2="20" class="gallows" />  <line x1="170" y1="20" x2="170" y2="50" class="gallows" /> <circle cx="170" cy="70" r="20" class="hangman-part head" />
-                <line x1="170" y1="90" x2="170" y2="150" class="hangman-part body" />
-                <line x1="170" y1="110" x2="140" y2="130" class="hangman-part left-arm" />
-                <line x1="170" y1="110" x2="200" y2="130" class="hangman-part right-arm" />
-                <line x1="170" y1="150" x2="140" y2="180" class="hangman-part left-leg" />
-                <line x1="170" y1="150" x2="200" y2="180" class="hangman-part right-leg" />
-            </svg>
-        </div>
-        <div id="word-display">
+    <div id="login-screen">
+        <div class="login-container">
+            <h2>Bem-vindo ao Jogo da Forca!</h2>
+            <label for="player-name-input">Digite seu nome ou nickname:</label>
+            <input type="text" id="player-name-input" placeholder="Seu nome aqui..." maxlength="20">
+            <button id="start-game-button">Iniciar Jogo</button>
+            <p id="login-message" class="message error"></p> </div>
+    </div>
+
+    <div id="game-screen" style="display: none;">
+        <div id="game-container"> <h1>Jogo da Forca</h1>
+            <p id="player-greeting"></p> <div class="hangman-drawing-container">
+                 <svg height="250" width="200" id="hangman-svg">
+                    <line x1="10" y1="230" x2="130" y2="230" class="gallows" />
+                    <line x1="70" y1="230" x2="70" y2="20" class="gallows" />
+                    <line x1="70" y1="20" x2="170" y2="20" class="gallows" />
+                    <line x1="170" y1="20" x2="170" y2="50" class="gallows" />
+                    <circle cx="170" cy="70" r="20" class="hangman-part head" />
+                    <line x1="170" y1="90" x2="170" y2="150" class="hangman-part body" />
+                    <line x1="170" y1="110" x2="140" y2="130" class="hangman-part left-arm" />
+                    <line x1="170" y1="110" x2="200" y2="130" class="hangman-part right-arm" />
+                    <line x1="170" y1="150" x2="140" y2="180" class="hangman-part left-leg" />
+                    <line x1="170" y1="150" x2="200" y2="180" class="hangman-part right-leg" />
+                </svg>
             </div>
 
-        <p id="instructions">Digite uma letra no teclado para adivinhar:</p>
-
-        <div id="incorrect-letters">
-            <h2>Letras Erradas:</h2>
-            <p id="wrong-letters-list"></p>
+            <div id="word-display"></div>
+            <p id="instructions">Digite uma letra no teclado para adivinhar:</p>
+            <div id="incorrect-letters">
+                <h2>Letras Erradas:</h2>
+                <p id="wrong-letters-list"></p>
+            </div>
+            <button id="restart-button">Jogar Novamente</button>
         </div>
-
-        <button id="restart-button">Jogar Novamente</button>
-
     </div>
 
     <script src="script.js"></script>

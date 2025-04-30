@@ -2,89 +2,76 @@
 const wordDisplayEl = document.getElementById('word-display');
 const wrongLettersListEl = document.getElementById('wrong-letters-list');
 const instructionsEl = document.getElementById('instructions');
-// Adicione aqui outros elementos se precisar (ex: tentativas, mensagens)
-// const attemptsLeftEl = document.getElementById('attempts-left');
-// const messageEl = document.getElementById('message');
+const restartButton = document.getElementById('restart-button'); // SELECIONA O BOTÃO
 
 // --- Estado do Jogo ---
-// Lista de palavras possíveis (adicione mais!)
-const palavras = ["JAVASCRIPT", "PROGRAMADOR", "DESAFIO", "COMPUTADOR", "ALGORITMO", "INTERFACE", "DESIGN", "HTML", "CSS", "APLICATIVO", "DIVERTIDO", "APRENDIZAGEM",
-                  "EXERCICIO", "DESENVOLVIMENTO", "TECNOLOGIA", "INOVACAO", "SISTEMA", "FUNCIONALIDADE", "USUARIO", "INTERATIVO", "DINAMICO", "PROJETO", "CONECTIVIDADE", 
-                  "PLATAFORMA", "RECURSO", "APLICACAO", "INTERFACE", "DESIGNER", "PROGRAMACAO", "SCRIPT", "DEBUGGING", "COMPILADOR", "EXECUCAO", "VARIAVEL", "FUNCAO",
-                  "OBJETO", "CLASSE", "HERANCA"];
-
-// Escolhe uma palavra aleatória da lista
-let palavraSecreta = palavras[Math.floor(Math.random() * palavras.length)];
-
-let letrasCorretas = []; // Array para guardar as letras corretas adivinhadas
-let letrasErradas = [];  // Array para guardar as letras erradas
-let jogoAtivo = true;   // Flag para controlar se o jogo ainda está rodando
+const palavras = ["JAVASCRIPT", "PROGRAMADOR", "DESAFIO", "COMPUTADOR", "ALGORITMO", "INTERFACE", "FRONTEND", "BACKEND"];
+let palavraSecreta; // Será definida no início e ao reiniciar
+let letrasCorretas;
+let letrasErradas;
+let jogoAtivo;
+let textoInstrucaoOriginal = instructionsEl.textContent; // Guarda o texto original
 
 // --- Funções ---
 
 /**
- * Atualiza a exibição da palavra na tela, mostrando letras corretas
- * e underscores para as letras não adivinhadas.
+ * Atualiza a exibição da palavra na tela...
  */
 function exibirPalavra() {
     wordDisplayEl.innerHTML = ''; // Limpa a exibição anterior
     palavraSecreta.split('').forEach(letra => {
-        // Cria um span para cada letra/underscore para estilização individual
         const spanLetra = document.createElement('span');
-        spanLetra.classList.add('letter'); // Adiciona a classe CSS .letter
+        spanLetra.classList.add('letter');
 
         if (letrasCorretas.includes(letra)) {
-            spanLetra.textContent = letra; // Mostra a letra correta
+            spanLetra.textContent = letra;
         } else {
-            spanLetra.textContent = '_'; // Mostra underscore
+            spanLetra.textContent = '_';
         }
         wordDisplayEl.appendChild(spanLetra);
     });
 
-    // Verifica condição de vitória
-    verificarVitoria();
+    // Verifica condição de vitória APÓS atualizar a exibição
+     if (jogoAtivo) { // Só verifica vitória se o jogo ainda está ativo
+         verificarVitoria();
+     }
 }
 
 /**
  * Atualiza a lista de letras erradas exibida na tela.
  */
 function exibirLetrasErradas() {
-    wrongLettersListEl.textContent = letrasErradas.join(', '); // Junta as letras com vírgula
-    // (Opcional) Atualizar a exibição de tentativas restantes aqui
-    // attemptsLeftEl.textContent = `Tentativas restantes: ${MAX_TENTATIVAS - letrasErradas.length}`;
+    wrongLettersListEl.textContent = letrasErradas.join(', ');
 
-    // (Opcional) Atualizar o desenho da forca aqui
-
-    // Verifica condição de derrota
-    verificarDerrota();
+    // Verifica condição de derrota APÓS atualizar a exibição
+    if (jogoAtivo) { // Só verifica derrota se o jogo ainda está ativo
+        verificarDerrota();
+    }
 }
 
 /**
- * Processa a letra digitada pelo usuário.
- * @param {string} letra - A letra digitada (já convertida para maiúscula).
+ * Processa a letra digitada pelo usuário...
  */
 function processarLetra(letra) {
-    // 1. Verifica se é uma letra válida (A-Z)
+    // Só processa se o jogo estiver ativo
+    if (!jogoAtivo) return;
+
     if (!letra.match(/^[A-Z]$/)) {
-        console.warn(`Input inválido: "${letra}". Esperando uma letra de A-Z.`);
-        return; // Ignora se não for uma letra
+        // console.warn(`Input inválido: "${letra}". Esperando uma letra de A-Z.`);
+        return; // Ignora silenciosamente ou mostra mensagem temporária
     }
 
-    // 2. Verifica se a letra já foi tentada (correta ou errada)
     if (letrasCorretas.includes(letra) || letrasErradas.includes(letra)) {
-        // (Opcional) Mostrar uma mensagem que a letra já foi tentada
-        console.log(`Letra "${letra}" já tentada.`);
         mostrarMensagemTemporaria(`Letra "${letra}" já foi tentada!`);
         return;
     }
 
-    // 3. Verifica se a letra está na palavra secreta
     if (palavraSecreta.includes(letra)) {
-        letrasCorretas.push(letra); // Adiciona às corretas
-        exibirPalavra(); // Atualiza a exibição da palavra
+        letrasCorretas.push(letra);
+        exibirPalavra(); // Atualiza a palavra (que vai chamar verificarVitoria)
     } else {
-        letrasErradas.push(letra); // Adiciona às erradas
-        exibirLetrasErradas(); // Atualiza a exibição das erradas
+        letrasErradas.push(letra);
+        exibirLetrasErradas(); // Atualiza letras erradas (que vai chamar verificarDerrota)
     }
 }
 
@@ -92,74 +79,105 @@ function processarLetra(letra) {
  * Verifica se o jogador ganhou o jogo.
  */
 function verificarVitoria() {
-    // Ganha se todas as letras da palavra secreta estão no array de letrasCorretas
-    const palavraRevelada = palavraSecreta.split('').every(letra => letrasCorretas.includes(letra));
+    // Ganha se todas as letras ÚNICAS da palavra secreta estão no array de letrasCorretas
+    // Usar Set para pegar letras únicas e evitar problemas com letras repetidas na palavra
+    const letrasUnicasPalavra = [...new Set(palavraSecreta.split(''))];
+    const ganhou = letrasUnicasPalavra.every(letra => letrasCorretas.includes(letra));
 
-    if (palavraRevelada && jogoAtivo) {
-        mostrarMensagem("Parabéns! Você venceu!", "win");
-        jogoAtivo = false; // Termina o jogo
+    if (ganhou) {
+        mostrarMensagem(`Parabéns! Você venceu! 🎉 A palavra era: ${palavraSecreta}`, "win");
+        jogoAtivo = false;
     }
 }
 
 /**
- * Verifica se o jogador perdeu o jogo (implementação básica).
- * Você precisará definir um número máximo de tentativas.
+ * Verifica se o jogador perdeu o jogo.
  */
 function verificarDerrota() {
-    const MAX_TENTATIVAS = 6; // Exemplo: Limite de 6 erros
-    if (letrasErradas.length >= MAX_TENTATIVAS && jogoAtivo) {
-        mostrarMensagem(`Você perdeu! A palavra era: ${palavraSecreta}`, "lose");
-        jogoAtivo = false; // Termina o jogo
+    const MAX_TENTATIVAS = 6;
+    if (letrasErradas.length >= MAX_TENTATIVAS) {
+        mostrarMensagem(`Você perdeu! 😢 A palavra era: ${palavraSecreta}`, "lose");
+        jogoAtivo = false;
     }
 }
 
 /**
  * Exibe uma mensagem temporária na área de instruções.
- * @param {string} texto - A mensagem a ser exibida.
- * @param {number} duracaoMs - Quanto tempo a mensagem fica visível (em milissegundos).
  */
 function mostrarMensagemTemporaria(texto, duracaoMs = 1500) {
-    const originalText = instructionsEl.textContent;
+    // Só mostra se o jogo estiver ativo e não houver mensagem final
+    if (!jogoAtivo || instructionsEl.classList.contains('win') || instructionsEl.classList.contains('lose')) {
+        return;
+    }
+
+    const originalText = textoInstrucaoOriginal; // Usa o texto original guardado
     instructionsEl.textContent = texto;
-    instructionsEl.style.color = '#e74c3c'; // Cor de aviso
+    instructionsEl.style.color = '#e74c3c';
     instructionsEl.style.fontWeight = 'bold';
 
     setTimeout(() => {
-        instructionsEl.textContent = originalText;
-        instructionsEl.style.color = ''; // Volta à cor original do CSS
-        instructionsEl.style.fontWeight = '';
+        // Só restaura se ainda for a mensagem temporária (evita sobrescrever msg final)
+        if (instructionsEl.textContent === texto) {
+            instructionsEl.textContent = originalText;
+            instructionsEl.style.color = ''; // Volta à cor original do CSS
+            instructionsEl.style.fontWeight = '';
+        }
     }, duracaoMs);
 }
 
 /**
 * Exibe uma mensagem final de vitória ou derrota.
-* @param {string} texto - A mensagem a ser exibida.
-* @param {string} classeCss - 'win' ou 'lose' para estilização.
 */
 function mostrarMensagem(texto, classeCss) {
-   // Reutiliza o elemento de instruções ou cria um novo elemento de mensagem
    instructionsEl.textContent = texto;
-   instructionsEl.className = classeCss; // Aplica a classe win ou lose
-   instructionsEl.style.fontWeight = 'bold';
+   // Remove classes anteriores e adiciona a nova
+   instructionsEl.classList.remove('win', 'lose');
+   instructionsEl.classList.add(classeCss);
+   instructionsEl.style.fontWeight = 'bold'; // Mantém o negrito para mensagens finais
+   instructionsEl.style.color = ''; // Deixa o CSS da classe definir a cor
 }
 
-// --- Event Listener ---
+/**
+ * Reinicia o estado do jogo para uma nova partida.
+ */
+function reiniciarJogo() {
+    console.log("Reiniciando o jogo..."); // Log para depuração
 
-// Adiciona um ouvinte de eventos para capturar teclas pressionadas
+    // 1. Reseta as variáveis de estado
+    letrasCorretas = [];
+    letrasErradas = [];
+    jogoAtivo = true;
+
+    // 2. Escolhe uma nova palavra secreta
+    palavraSecreta = palavras[Math.floor(Math.random() * palavras.length)];
+    console.log("Nova Palavra Secreta:", palavraSecreta); // Log para depuração
+
+    // 3. Limpa as mensagens e restaura instruções originais
+    instructionsEl.textContent = textoInstrucaoOriginal; // Volta o texto inicial
+    instructionsEl.classList.remove('win', 'lose'); // Remove classes de vitória/derrota
+    instructionsEl.style.fontWeight = ''; // Remove negrito se houver
+    instructionsEl.style.color = ''; // Remove cor específica
+
+    // 4. Atualiza a interface gráfica
+    exibirPalavra(); // Mostra os underscores da nova palavra
+    exibirLetrasErradas(); // Limpa a lista de letras erradas
+
+    // (Opcional) Resetar o desenho da forca aqui, se implementado
+}
+
+// --- Event Listeners ---
+
+// Listener para teclas pressionadas
 window.addEventListener('keydown', (event) => {
-    // Verifica se o jogo ainda está ativo
     if (!jogoAtivo) {
-        console.log("Jogo terminado. Nenhuma letra será processada.");
         return; // Não faz nada se o jogo acabou
     }
-
-    const letraPressionada = event.key.toUpperCase(); // Pega a tecla e converte para maiúscula
-    console.log("Tecla pressionada:", event.key, "-> Processando como:", letraPressionada); // Para depuração
-
-    processarLetra(letraPressionada); // Chama a função para processar a letra
+    const letraPressionada = event.key.toUpperCase();
+    processarLetra(letraPressionada);
 });
 
+// Listener para o botão de reiniciar
+restartButton.addEventListener('click', reiniciarJogo); // CHAMA A FUNÇÃO DE REINÍCIO
+
 // --- Inicialização do Jogo ---
-console.log("Palavra Secreta:", palavraSecreta); // Para depuração inicial
-exibirPalavra(); // Exibe a palavra com underscores no início
-// exibirLetrasErradas(); // (Opcional) Exibe a área de letras erradas vazia
+reiniciarJogo(); // Chama reiniciarJogo para configurar o estado inicial na primeira vez
